@@ -1,0 +1,29 @@
+# CDK context json file
+cdk.context.json
+
+# CDK asset directories
+.cdk.staging/
+cdk.out/
+
+# Compiled output
+dist/
+tmp/
+out-tsc/
+bazel-out/
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# macOS
+.DS_Store
+
+# Misc
+.env

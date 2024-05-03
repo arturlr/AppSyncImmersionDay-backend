@@ -1,0 +1,170 @@
+type Book @aws_api_key
+@aws_cognito_user_pools {
+	id: ID!
+	title: String!
+	authorId: ID!
+	publisherId: ID!
+	genres: [String]
+	publicationYear: Int
+	image: String
+	description: String
+}
+
+type BookConnection @aws_api_key
+@aws_cognito_user_pools {
+	items: [Book]
+	nextToken: String
+}
+
+input CreateBookInput {
+	id: ID
+	title: String!
+	authorId: ID!
+	publisherId: ID!
+	genres: [String]
+	publicationYear: Int
+	image: String
+	description: String
+}
+
+input DeleteBookInput {
+	id: ID!
+}
+
+input TableBookFilterInput {
+	id: TableIDFilterInput
+	title: TableStringFilterInput
+	authorId: TableIDFilterInput
+	publisherId: TableIDFilterInput
+	genres: TableStringFilterInput
+	publicationYear: TableIntFilterInput
+	image: TableStringFilterInput
+	description: TableStringFilterInput
+}
+
+input TableBooleanFilterInput {
+	ne: Boolean
+	eq: Boolean
+}
+
+input TableFloatFilterInput {
+	ne: Float
+	eq: Float
+	le: Float
+	lt: Float
+	ge: Float
+	gt: Float
+	contains: Float
+	notContains: Float
+	between: [Float]
+}
+
+input TableIDFilterInput {
+	ne: ID
+	eq: ID
+	le: ID
+	lt: ID
+	ge: ID
+	gt: ID
+	contains: ID
+	notContains: ID
+	between: [ID]
+	beginsWith: ID
+}
+
+input TableIntFilterInput {
+	ne: Int
+	eq: Int
+	le: Int
+	lt: Int
+	ge: Int
+	gt: Int
+	contains: Int
+	notContains: Int
+	between: [Int]
+}
+
+input TableStringFilterInput {
+	ne: String
+	eq: String
+	le: String
+	lt: String
+	ge: String
+	gt: String
+	contains: String
+	notContains: String
+	between: [String]
+	beginsWith: String
+}
+
+input UpdateBookInput {
+	id: ID!
+	title: String
+	authorId: ID
+	publisherId: ID
+	genres: [String]
+	publicationYear: Int
+	image: String
+	description: String
+}
+
+type Mutation {
+	createBook(input: CreateBookInput!): Book
+		@aws_cognito_user_pools
+	updateBook(input: UpdateBookInput!): Book
+		@aws_cognito_user_pools
+	deleteBook(input: DeleteBookInput!): Book
+		@aws_cognito_user_pools
+}
+
+type Query {
+	getBook(id: ID!): Book
+		@aws_api_key
+@aws_cognito_user_pools
+	listBooks(filter: TableBookFilterInput, limit: Int, nextToken: String): BookConnection
+		@aws_api_key
+@aws_cognito_user_pools
+	listBooksByGenre(genre: String!, limit: Int, nextToken: String): BookConnection
+		@aws_api_key
+@aws_cognito_user_pools
+	queryBooksByAuthorIndex(authorId: ID!, first: Int, after: String): BookConnection
+		@aws_api_key
+@aws_cognito_user_pools
+	queryBooksByPublisherIndex(publisherId: ID!, first: Int, after: String): BookConnection
+		@aws_api_key
+@aws_cognito_user_pools
+}
+
+
+type Subscription {
+	onCreateBook(
+		id: ID,
+		title: String,
+		authorId: ID,
+		publisherId: ID,
+		genres: [String]
+	): Book
+		@aws_subscribe(mutations: ["createBook"])
+@aws_api_key
+@aws_cognito_user_pools
+	onUpdateBook(
+		id: ID,
+		title: String,
+		authorId: ID,
+		publisherId: ID,
+		genres: [String]
+	): Book
+		@aws_subscribe(mutations: ["updateBook"])
+@aws_api_key
+@aws_cognito_user_pools
+	onDeleteBook(
+		id: ID,
+		title: String,
+		authorId: ID,
+		publisherId: ID,
+		genres: [String]
+	): Book
+		@aws_subscribe(mutations: ["deleteBook"])
+@aws_api_key
+@aws_cognito_user_pools
+}
