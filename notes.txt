@@ -1,0 +1,12 @@
+
+aws secretsmanager create-secret \
+  --name MySecret \
+  --secret-string ''
+
+
+- AppSyncImmersionDay-backend
+npm install
+cdk deploy AnyCompanyReadsBackendStack
+cdk deploy AnyCompanyReadsFrontendStack
+
+
